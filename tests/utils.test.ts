@@ -87,7 +87,9 @@ describe("generateHeaders", () => {
     expect(headers["Accept"]).toBeDefined();
     expect(headers["Accept-Language"]).toBeDefined();
     expect(headers["Accept-Encoding"]).toBeDefined();
-    expect(headers["Cache-Control"]).toBe("no-cache");
+    // Real Chrome does NOT send Cache-Control on a fresh navigation (only on
+    // explicit reload). generateHeaders intentionally omits it to avoid a tell.
+    expect(headers["Cache-Control"]).toBeUndefined();
     expect(headers["Upgrade-Insecure-Requests"]).toBe("1");
   });
 
@@ -121,9 +123,11 @@ describe("generateHeaders", () => {
       const isFirefox = ua.includes("Firefox/") && !ua.includes("Chrome/");
 
       if (isChromium && !isFirefox) {
-        expect(headers["Sec-Ch-Ua"]).toBeDefined();
-        expect(headers["Sec-Ch-Ua-Mobile"]).toBe("?0");
-        expect(headers["Sec-Ch-Ua-Platform"]).toBeDefined();
+        // Client-hint headers are lowercase on the wire (HTTP/2) and emitted
+        // lowercase by generateHeaders / generateChromeHeaders to match real Chrome.
+        expect(headers["sec-ch-ua"]).toBeDefined();
+        expect(headers["sec-ch-ua-mobile"]).toBe("?0");
+        expect(headers["sec-ch-ua-platform"]).toBeDefined();
         expect(headers["Sec-Fetch-Site"]).toBe("none");
         expect(headers["Sec-Fetch-Mode"]).toBe("navigate");
         expect(headers["Sec-Fetch-User"]).toBe("?1");
@@ -131,9 +135,11 @@ describe("generateHeaders", () => {
       }
 
       if (isFirefox) {
-        expect(headers["Sec-Ch-Ua"]).toBeUndefined();
-        expect(headers["Sec-Ch-Ua-Mobile"]).toBeUndefined();
-        expect(headers["Sec-Fetch-Site"]).toBeUndefined();
+        // Client-hint (sec-ch-ua*) headers are Chromium-only — Firefox omits them.
+        expect(headers["sec-ch-ua"]).toBeUndefined();
+        expect(headers["sec-ch-ua-mobile"]).toBeUndefined();
+        // But Firefox (v90+) DOES send Fetch Metadata (Sec-Fetch-*) headers.
+        expect(headers["Sec-Fetch-Site"]).toBe("none");
       }
     }
   });
