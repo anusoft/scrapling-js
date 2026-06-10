@@ -50,6 +50,19 @@ curl "http://localhost:3001/fetch?url=https://tls.peet.ws/api/all"
 
 `generateChromeHeaders(url?)` returns `{ headers, os, version }` where `version` feeds wreq-js's `chrome_<version>` TLS profile, keeping the User-Agent, Client Hints, and TLS fingerprint all consistent. `generateHeaders()` returns a weighted Chrome/Firefox/Edge mix for the header-only path.
 
+## Benchmark
+
+`benchmark.ts` scores scrapling-js's own stealth output (the wreq-js TLS path) against
+public TLS/HTTP-2 fingerprint reflectors — a real Chrome scores ~100%, a stock client ~35%:
+
+```bash
+bun run benchmark.ts            # all sites (peetws, browserleaks, cftrace)
+bun run benchmark.ts peetws     # a single site
+```
+
+It checks JA3/JA4 (Chrome `t13d…` prefix), HTTP/2, TLS 1.3, modern AEAD ciphers, ALPN,
+and User-Agent realism — the same signals an anti-bot WAF inspects at the transport layer.
+
 ## Develop
 
 ```bash
