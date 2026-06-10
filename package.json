@@ -1,0 +1,29 @@
+{
+  "name": "scrapling-js",
+  "version": "0.1.0",
+  "description": "Scrapling's HTTP layer ported to TypeScript for Bun + Cloudflare Workers — stealth headers, wreq-js TLS impersonation, and a cheerio-backed CSS/XPath selector API.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "node-html-markdown": "^2.0.0",
+    "wreq-js": "2.3.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.0"
+  }
+}

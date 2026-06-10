@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scrapling-js — stealth HTTP for Bun &amp; Cloudflare Workers</title>
+<meta name="description" content="TypeScript port of Scrapling's HTTP layer for Bun and Cloudflare Workers: stealth headers, wreq-js TLS impersonation, and a cheerio-backed CSS/XPath selector API.">
+<style>
+  :root { --bg:#0b0f17; --card:#131a26; --fg:#e6edf3; --mut:#9aa7b8; --acc:#f59e0b; --acc2:#818cf8; --br:#243044; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); }
+  .wrap { max-width:880px; margin:0 auto; padding:0 22px; }
+  header { padding:72px 0 36px; text-align:center; }
+  h1 { font-size:2.7rem; margin:0 0 8px; letter-spacing:-.02em; }
+  h1 .dot { color:var(--acc); }
+  .tag { color:var(--mut); font-size:1.18rem; max-width:640px; margin:0 auto; }
+  .cta { margin:26px 0 8px; }
+  .btn { display:inline-block; padding:11px 20px; border-radius:9px; text-decoration:none; font-weight:600; margin:4px; }
+  .btn.primary { background:var(--acc); color:#221700; }
+  .btn.ghost { border:1px solid var(--br); color:var(--fg); }
+  section { margin:30px 0; }
+  h2 { font-size:1.25rem; border-bottom:1px solid var(--br); padding-bottom:8px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--br); border-radius:12px; padding:16px 18px; }
+  .card h3 { margin:0 0 6px; font-size:1.02rem; color:var(--acc); }
+  .card p { margin:0; color:var(--mut); font-size:.94rem; }
+  pre { background:#0a0e15; border:1px solid var(--br); border-radius:10px; padding:16px; overflow:auto; }
+  code { font-family:"SF Mono",Menlo,Consolas,monospace; font-size:.9rem; }
+  footer { color:var(--mut); text-align:center; padding:40px 0; font-size:.9rem; border-top:1px solid var(--br); margin-top:40px; }
+  a { color:var(--acc2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>scrapling-js<span class="dot">.</span></h1>
+    <p class="tag">A TypeScript port of <a href="https://github.com/D4Vinci/Scrapling">Scrapling</a>'s HTTP layer for <strong>Bun</strong> and <strong>Cloudflare Workers</strong> — stealth headers, wreq-js TLS impersonation, and a cheerio-backed selector API.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/1moby/scrapling-js">View on GitHub</a>
+      <a class="btn ghost" href="https://github.com/1moby/scrapling-js#readme">Documentation</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Features</h2>
+    <div class="grid">
+      <div class="card"><h3>Stealth headers</h3><p>Coherent Chrome/Firefox/Edge header sets — Client Hints, <code>Sec-Fetch-*</code>, Accept ordering — matching real browser fingerprints.</p></div>
+      <div class="card"><h3>TLS impersonation</h3><p>Pairs headers with <code>wreq-js</code> (Rust/BoringSSL) so the JA3/JA4 + HTTP/2 fingerprint matches the claimed Chrome version.</p></div>
+      <div class="card"><h3>Fetcher &amp; sessions</h3><p>One-shot <code>Fetcher</code> and stateful <code>FetcherSession</code> with cookie preservation, retries, and proxy rotation.</p></div>
+      <div class="card"><h3>Selector API</h3><p>cheerio-backed CSS + XPath with <code>::text</code> / <code>::attr()</code> pseudo-elements, requests-like ergonomics.</p></div>
+      <div class="card"><h3>Edge-ready</h3><p>The core has no Node-only dependencies — deploy it straight to Cloudflare Workers.</p></div>
+      <div class="card"><h3>Version-aligned</h3><p>Header Chrome versions track the wreq-js TLS profiles (<code>chrome_145–147</code>) so UA and fingerprint never disagree.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quick start</h2>
+    <pre><code>bun add scrapling-js</code></pre>
+    <pre><code>import { Fetcher } from "scrapling-js";
+
+const page = await Fetcher.get("https://example.com");
+const links = page.css("a::attr(href)").getAll();
+const title = page.css("title::text").get();</code></pre>
+    <p>Need full Chrome TLS impersonation? Run the bundled <code>stealth-proxy.ts</code> (Bun + wreq-js) and fetch through <code>localhost:3001</code>.</p>
+  </section>
+
+  <footer>
+    scrapling-js · MIT · port of <a href="https://github.com/D4Vinci/Scrapling">D4Vinci/Scrapling</a> · <a href="https://github.com/1moby/scrapling-js">github.com/1moby/scrapling-js</a>
+  </footer>
+</div>
+</body>
+</html>
