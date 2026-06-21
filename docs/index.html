@@ -42,12 +42,17 @@
   .stat b { display:block; font-size:1.7rem; color:var(--acc); letter-spacing:-.01em; }
   .stat span { color:var(--mut); font-size:.86rem; }
   .note { font-size:.86rem; color:var(--mut); }
+  .langbar { text-align:right; padding-top:14px; font-size:.9rem; color:var(--mut); }
+  .langbar a, .langbar span { margin-left:10px; }
+  .langbar .cur { color:var(--fg); font-weight:600; }
   footer { color:var(--mut); text-align:center; padding:40px 0; font-size:.9rem; border-top:1px solid var(--br); margin-top:50px; }
   @media (max-width:620px){ .pick{grid-template-columns:1fr;} h1{font-size:2.2rem;} .stats{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <div class="wrap">
+
+  <div class="langbar"><span class="cur">EN</span><a href="th/">ไทย</a></div>
 
   <header>
     <span class="badge">⚡ no browser · fast · edge-ready</span>
