@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "scrapling-js-worker",
+  "account_id": "f6b0ba795cbaf57a67a3b90915edbd2c",
+  "main": "examples/worker.ts",
+  "compatibility_date": "2026-02-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "scraper.1moby.tech",
+      "custom_domain": true
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "crawl-manager-db",
+      "database_id": "cd312a00-34d7-4895-96df-7d6e7e11aecf"
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/auth/*", "/scrape*", "/markdown*", "/health"]
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
