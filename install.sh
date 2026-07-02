@@ -76,6 +76,19 @@ ensure_bun() {
   fi
 }
 
+ensure_runtime_build() {
+  local package_dir="$project_dir/node_modules/scrapling-js"
+  if [[ -f "$package_dir/dist/index.js" ]]; then
+    return
+  fi
+  if [[ ! -f "$package_dir/package.json" ]]; then
+    echo "scrapling-js package was not installed under $package_dir" >&2
+    exit 1
+  fi
+  echo "Building installed scrapling-js package..."
+  (cd "$package_dir" && bun run build)
+}
+
 is_scrapling_repo() {
   [[ -f "$project_dir/package.json" ]] && grep -q '"name"[[:space:]]*:[[:space:]]*"scrapling-js"' "$project_dir/package.json"
 }
@@ -105,6 +118,7 @@ case "$mode" in
       bun init --yes >/dev/null
     fi
     bun add "$package_spec"
+    ensure_runtime_build
     ;;
   *)
     echo "unknown install mode: $mode" >&2
