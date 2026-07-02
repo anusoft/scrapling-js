@@ -13,7 +13,22 @@ A TypeScript port of [Scrapling](https://github.com/D4Vinci/Scrapling)'s HTTP la
 ## Install
 
 ```bash
-bun add scrapling-js          # or: npm i scrapling-js
+bun add github:anusoft/scrapling-js
+```
+
+For generated crawling scripts, bootstrap the current script directory with
+curl and bash. The installer adds Bun if it is missing, initializes a minimal Bun
+project if needed, then runs `bun add github:anusoft/scrapling-js`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/anusoft/scrapling-js/main/install.sh | bash
+```
+
+From a repo clone, the same script installs development dependencies and builds
+`dist/`:
+
+```bash
+./install.sh
 ```
 
 ## Usage

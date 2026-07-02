@@ -14,11 +14,11 @@
   },
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "prepare": "bun run build",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@1moby/just-auth": "/home/anu/react-auth",
     "cheerio": "^1.0.0",
     "node-html-markdown": "^2.0.0",
     "wreq-js": "2.3.1"
