@@ -5,10 +5,13 @@
  * Supports Chrome, Firefox, and Edge with proper Client Hints and Sec-Fetch headers.
  */
 
-// Browser version pools (keep in sync with Scrapling's fingerprints.py)
-const CHROME_VERSIONS = [141, 142, 143];
-const FIREFOX_VERSIONS = [140, 141, 142];
-const EDGE_VERSIONS = [141, 142];
+// Browser version pools (keep in sync with Scrapling's fingerprints.py).
+// Chrome is capped at 147 because the wreq-js TLS profiles (used for the
+// impersonated path in stealth-proxy.ts / bench_fetch_wreq.ts) ship through
+// chrome_147; 145-147 brackets the system Chrome (148) the browser tier runs.
+const CHROME_VERSIONS = [145, 146, 147];
+const FIREFOX_VERSIONS = [142, 143, 144];
+const EDGE_VERSIONS = [145, 146, 147];
 
 // Not-A-Brand tokens Chrome rotates per major version
 const NOT_A_BRAND_TOKENS = [

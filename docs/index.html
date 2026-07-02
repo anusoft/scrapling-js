@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scrapling-js — fast, no-browser stealth HTTP for Bun &amp; Cloudflare Workers</title>
+<meta name="description" content="A TypeScript port of Scrapling's HTTP layer for Bun and Cloudflare Workers: no browser, wreq-js TLS impersonation, stealth headers, and a cheerio-backed CSS/XPath selector API. The fast path for scraping JSON APIs and embedded JSON.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root { --bg:#0b0f17; --card:#131a26; --fg:#e6edf3; --mut:#9aa7b8; --acc:#f59e0b; --acc2:#818cf8; --br:#243044; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); }
+  .wrap { max-width:900px; margin:0 auto; padding:0 22px; }
+  header { padding:72px 0 28px; text-align:center; }
+  .badge { display:inline-block; font-size:.78rem; letter-spacing:.04em; text-transform:uppercase; color:var(--acc); border:1px solid var(--br); border-radius:999px; padding:4px 12px; margin-bottom:18px; }
+  h1 { font-size:2.8rem; margin:0 0 10px; letter-spacing:-.02em; }
+  h1 .dot { color:var(--acc); }
+  .tag { color:var(--mut); font-size:1.18rem; max-width:680px; margin:0 auto; }
+  .cta { margin:28px 0 8px; }
+  .btn { display:inline-block; padding:11px 20px; border-radius:9px; text-decoration:none; font-weight:600; margin:4px; }
+  .btn.primary { background:var(--acc); color:#221700; }
+  .btn.ghost { border:1px solid var(--br); color:var(--fg); }
+  section { margin:44px 0; }
+  h2 { font-size:1.4rem; margin-bottom:6px; }
+  .sub { color:var(--mut); margin:0 0 18px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--br); border-radius:12px; padding:16px 18px; }
+  .card h3 { margin:0 0 6px; font-size:1.02rem; color:var(--acc); }
+  .card p { margin:0; color:var(--mut); font-size:.94rem; }
+  pre { background:#0a0e15; border:1px solid var(--br); border-radius:10px; padding:16px; overflow:auto; margin:10px 0; }
+  code { font-family:"SF Mono",Menlo,Consolas,monospace; font-size:.88rem; }
+  p code, li code, td code { background:#0a0e15; border:1px solid var(--br); border-radius:5px; padding:1px 5px; font-size:.85rem; }
+  a { color:var(--acc2); }
+  .pick { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .pick .card.js { border-color:#4a3a18; }
+  .pick .card.us { border-color:#2c4a45; }
+  .pick h3 { font-size:1.08rem; }
+  .pick .when { color:var(--fg); font-weight:600; font-size:.9rem; margin:10px 0 2px; }
+  .pick ul { margin:6px 0 0; padding-left:18px; color:var(--mut); font-size:.9rem; }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; text-align:center; }
+  .stat { background:var(--card); border:1px solid var(--br); border-radius:12px; padding:18px; }
+  .stat b { display:block; font-size:1.7rem; color:var(--acc); letter-spacing:-.01em; }
+  .stat span { color:var(--mut); font-size:.86rem; }
+  .note { font-size:.86rem; color:var(--mut); }
+  .langbar { text-align:right; padding-top:14px; font-size:.9rem; color:var(--mut); }
+  .langbar a, .langbar span { margin-left:10px; }
+  .langbar .cur { color:var(--fg); font-weight:600; }
+  footer { color:var(--mut); text-align:center; padding:40px 0; font-size:.9rem; border-top:1px solid var(--br); margin-top:50px; }
+  @media (max-width:620px){ .pick{grid-template-columns:1fr;} h1{font-size:2.2rem;} .stats{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="langbar"><span class="cur">EN</span><a href="th/">ไทย</a></div>
+
+  <header>
+    <span class="badge">⚡ no browser · fast · edge-ready</span>
+    <h1>scrapling-js<span class="dot">.</span></h1>
+    <p class="tag">The <strong>fast path</strong> for scraping — a TypeScript port of <a href="https://github.com/D4Vinci/Scrapling">Scrapling</a>'s HTTP layer for <strong>Bun</strong> and <strong>Cloudflare Workers</strong>. No browser, no headless overhead: <code>wreq-js</code> TLS impersonation, coherent stealth headers, and a cheerio-backed selector API.</p>
+    <div class="cta">
+      <a class="btn primary" href="#start">Quick start</a>
+      <a class="btn ghost" href="https://github.com/anusoft/scrapling-js">View on GitHub</a>
+    </div>
+  </header>
+
+  <section id="speed">
+    <div class="stats">
+      <div class="stat"><b>0</b><span>browsers launched — pure HTTP, no Chromium, no headless tells</span></div>
+      <div class="stat"><b>JA3/JA4</b><span>real-Chrome TLS + HTTP/2 fingerprint via wreq-js (Rust/BoringSSL)</span></div>
+      <div class="stat"><b>Edge</b><span>core has no Node-only deps — deploys to Cloudflare Workers</span></div>
+    </div>
+  </section>
+
+  <!-- WHICH TOOL -->
+  <section id="pick">
+    <h2>When to reach for it</h2>
+    <p class="sub">scrapling-js is for speed. When a site fights back with JS challenges, switch to its stealth-browser sibling.</p>
+    <div class="pick">
+      <div class="card js">
+        <h3>⚡ scrapling-js <span class="note">— this project</span></h3>
+        <p>Pure-HTTP fetching with TLS impersonation. Milliseconds, not seconds.</p>
+        <div class="when">Use it for</div>
+        <ul>
+          <li>JSON APIs &amp; embedded JSON (<code>__NEXT_DATA__</code>)</li>
+          <li>Maximum throughput / large crawls</li>
+          <li>Cloudflare Workers &amp; serverless edge</li>
+        </ul>
+      </div>
+      <div class="card us">
+        <h3>🥷 <a href="https://anusoft.github.io/ultrastealth/">Ultrastealth</a> <span class="note">— sibling</span></h3>
+        <p>Headed real-Chrome automation that beats bot detection.</p>
+        <div class="when">Use it for</div>
+        <ul>
+          <li>Highly protected sites (Cloudflare, Imperva, DataDome)</li>
+          <li>JS-rendered SPAs with no usable API</li>
+          <li>Clicks, forms, multi-step flows</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:12px">Don't want to choose? The <a href="https://anusoft.github.io/ultrastealth/#skill">craft-scraper skill</a> inspects the site and emits a script using whichever fits — scrapling-js for APIs, Ultrastealth for protected pages.</p>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <h2>Features</h2>
+    <div class="grid">
+      <div class="card"><h3>Stealth headers</h3><p>Coherent Chrome/Firefox/Edge header sets — Client Hints, <code>Sec-Fetch-*</code>, Accept ordering — matching real browser fingerprints.</p></div>
+      <div class="card"><h3>TLS impersonation</h3><p>Pairs headers with <code>wreq-js</code> (Rust/BoringSSL) so the JA3/JA4 + HTTP/2 fingerprint matches the claimed Chrome version (<code>chrome_145–147</code>).</p></div>
+      <div class="card"><h3>Fetcher &amp; sessions</h3><p>One-shot <code>Fetcher</code> and stateful <code>FetcherSession</code> with cookie preservation, retries, and proxy rotation.</p></div>
+      <div class="card"><h3>Selector API</h3><p>cheerio-backed CSS + XPath with <code>::text</code> / <code>::attr()</code> pseudo-elements and requests-like ergonomics.</p></div>
+      <div class="card"><h3>Edge-ready</h3><p>The core has no Node-only dependencies — deploy it straight to Cloudflare Workers.</p></div>
+      <div class="card"><h3>Version-aligned</h3><p>Header Chrome versions track the wreq-js TLS profiles so UA and fingerprint never disagree.</p></div>
+    </div>
+  </section>
+
+  <!-- QUICK START -->
+  <section id="start">
+    <h2>Quick start</h2>
+    <pre><code>bun add scrapling-js          # or: npm i scrapling-js</code></pre>
+    <pre><code>import { Fetcher } from "scrapling-js";
+
+// stealthy headers are on by default
+const page = await Fetcher.get("https://example.com");
+const title = page.css("title::text").get();
+const links = page.css("a::attr(href)").getAll();</code></pre>
+
+    <h2 style="margin-top:28px">Hit a JSON API directly</h2>
+    <pre><code>const r = await Fetcher.get("https://shop.example.com/api/products", {
+  params: { page: "1" },
+  headers: { accept: "application/json", referer: "https://shop.example.com/" },
+  stealthyHeaders: true,
+});
+const data = JSON.parse(r.body);</code></pre>
+    <p class="note">Need full Chrome TLS at the wire level for a stubborn host? Run the bundled <code>stealth-proxy.ts</code> (Bun + wreq-js) and fetch through <code>localhost:3001</code>.</p>
+  </section>
+
+  <footer>
+    scrapling-js · MIT · port of <a href="https://github.com/D4Vinci/Scrapling">D4Vinci/Scrapling</a> ·
+    <a href="https://github.com/anusoft/scrapling-js">github.com/anusoft/scrapling-js</a> ·
+    sibling: <a href="https://anusoft.github.io/ultrastealth/">Ultrastealth</a>
+  </footer>
+</div>
+</body>
+</html>

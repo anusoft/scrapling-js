@@ -150,8 +150,9 @@ describe("generateHeaders", () => {
       const chromeMatch = ua.match(/Chrome\/(\d+)\.0\.0\.0 Safari/);
       if (chromeMatch && !ua.includes("Edg/")) {
         const ver = parseInt(chromeMatch[1], 10);
-        expect(ver).toBeGreaterThanOrEqual(141);
-        expect(ver).toBeLessThanOrEqual(143);
+        // Tracks CHROME_VERSIONS in src/headers.ts (capped at wreq-js's chrome_147).
+        expect(ver).toBeGreaterThanOrEqual(145);
+        expect(ver).toBeLessThanOrEqual(147);
       }
     }
   });
